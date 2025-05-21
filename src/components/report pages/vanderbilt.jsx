@@ -22,13 +22,30 @@ const formatDOB = (dobStr) => {
   return isNaN(date) ? "N/A" : date.toLocaleDateString();
 };
 
+function formatListWithAnd(input) {
+  const items = input.split(',').map(item => item.trim());
+
+  if (items.length === 1) {
+    return items[0];
+  } else if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`;
+  } else {
+    const last = items.pop();
+    return `${items.join(', ')} and ${last}`;
+  }
+};
+
 const patientData = {
   name: getURLParameter("name"),
   dob: formatDOB(getURLParameter("dob")),
   doa: excelDateToJSDate(getURLParameter("doa")),
-  ca: getURLParameter("ca"),
-  da: getURLParameter("da"),
-  dq: getURLParameter("dq"),
+  inattention : getURLParameter("Inattention"),
+  hyp_impul : getURLParameter("Hyperactive_Impulsive"),
+  combined : getURLParameter("Combined"),
+  defiant : getURLParameter("Defiant"),
+  conduct : getURLParameter("Anx_dep"),
+  anx_dep : getURLParameter("Inattention"),
+  result : formatListWithAnd(getURLParameter("result")),
   currentDate: new Date().toLocaleDateString()
 };
 
@@ -66,19 +83,18 @@ const patientData = {
             </tr>
           </thead>
           <tbody>
-            <tr><td className="border px-4 py-2">Inattention</td><td className="border px-4 py-2">{patientData.da}</td></tr>
-            <tr><td className="border px-4 py-2">Hyperactivity/Impulsivity</td><td className="border px-4 py-2">{patientData.ca}</td></tr>
-            <tr><td className="border px-4 py-2">Combined type</td><td className="border px-4 py-2">{patientData.dq}</td></tr>
-            <tr><td className="border px-4 py-2">Oppositional Defiant Disorder</td><td className="border px-4 py-2">{patientData.dq}</td></tr>
-            <tr><td className="border px-4 py-2">Conduct Disorder</td><td className="border px-4 py-2">{patientData.dq}</td></tr>
-            <tr><td className="border px-4 py-2">Anxiety/Depression</td><td className="border px-4 py-2">{patientData.dq}</td></tr>
+            <tr><td className="border px-4 py-2">Inattention</td><td className="border px-4 py-2">{patientData.inattention}</td></tr>
+            <tr><td className="border px-4 py-2">Hyperactivity/Impulsivity</td><td className="border px-4 py-2">{patientData.hyp_impul}</td></tr>
+            <tr><td className="border px-4 py-2">Combined type</td><td className="border px-4 py-2">{patientData.combined}</td></tr>
+            <tr><td className="border px-4 py-2">Oppositional Defiant Disorder</td><td className="border px-4 py-2">{patientData.defiant}</td></tr>
+            <tr><td className="border px-4 py-2">Conduct Disorder</td><td className="border px-4 py-2">{patientData.conduct}</td></tr>
+            <tr><td className="border px-4 py-2">Anxiety/Depression</td><td className="border px-4 py-2">{patientData.anx_dep}</td></tr>
           </tbody>
         </table>
 
         <p className="mt-4 text-justify text-gray-700">
         The scores on Vanderbilt ADHD diagnostic scale (as per the parent’s reporting) were 
         indicative of {patientData.result}. 
-        {/* add the result */}
         </p>
         
 
