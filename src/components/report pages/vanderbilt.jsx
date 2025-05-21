@@ -15,15 +15,17 @@ const excelDateToJSDate = (serial) => {
 };
 
 // Validate dd/mm/yyyy format, else fallback
-const formatDOB = (dobStr) => {
-  if (!dobStr || !dobStr.includes("/")) return "N/A";
-  const [day, month, year] = dobStr.split("/").map(Number);
-  
-  // JS months are 0-indexed (Jan = 0, Dec = 11)
-  const date = new Date(year, month - 1, day);
-
-  return isNaN(date.getTime()) ? "N/A" : date.toLocaleDateString();
-};
+  const formatDOB = (rawDate) => {
+    if (!rawDate) return "N/A";
+    if (!isNaN(rawDate)) {
+      const excelEpoch = new Date(1899, 11, 30);
+      const date = new Date(excelEpoch.getTime() + rawDate * 86400000);
+      return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+    }
+    const parts = rawDate.split("/");
+    if (parts.length !== 3) return rawDate;
+    return `${parts[1].padStart(2, "0")}/${parts[0].padStart(2, "0")}/${parts[2]}`;
+  };
 
 function formatListWithAnd(input) {
   const items = input.split(',').map(item => item.trim());
