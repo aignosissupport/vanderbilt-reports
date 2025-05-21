@@ -17,9 +17,12 @@ const excelDateToJSDate = (serial) => {
 // Validate dd/mm/yyyy format, else fallback
 const formatDOB = (dobStr) => {
   if (!dobStr || !dobStr.includes("/")) return "N/A";
-  const [day, month, year] = dobStr.split("/");
-  const date = new Date(`${year}-${month}-${day}`);
-  return isNaN(date) ? "N/A" : date.toLocaleDateString();
+  const [day, month, year] = dobStr.split("/").map(Number);
+  
+  // JS months are 0-indexed (Jan = 0, Dec = 11)
+  const date = new Date(year, month - 1, day);
+
+  return isNaN(date.getTime()) ? "N/A" : date.toLocaleDateString();
 };
 
 function formatListWithAnd(input) {
@@ -36,7 +39,7 @@ function formatListWithAnd(input) {
 };
 
 const patientData = {
-  name: getURLParameter("name"),
+  name: getURLParameter("name").toUpperCase(),
   dob: formatDOB(getURLParameter("dob")),
   doa: excelDateToJSDate(getURLParameter("doa")),
   inattention : getURLParameter("Inattention"),
