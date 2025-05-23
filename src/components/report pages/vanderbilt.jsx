@@ -28,6 +28,11 @@ const excelDateToJSDate = (serial) => {
   };
 
 function formatListWithAnd(input) {
+  
+  if (input==="inattentive, hyperactive/impulsive, combined ADHD"){
+      return `comined ADHD (inattentive and hyperactive/impulsive)`;
+    }
+  
   const items = input.split(',').map(item => item.trim());
 
   if (items.length === 1) {

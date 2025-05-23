@@ -2,7 +2,7 @@ import React, { useRef, useState, useContext } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import Commnpdfpage from "./Commnpdfpage";
-import DST from "./vanderbilt";
+import Vanderbilt from "./vanderbilt";
 import imglogo from "/aignosislogo.png";
 import { AppContext } from "../../AppContext";
 
@@ -28,7 +28,7 @@ const ComponentToPrint = React.forwardRef(({ isisaaChecked, ismchatChecked, isca
     ))}
 
     {/* Conditional Components can be added here using the checkbox states */}
-    <div className="pdf-page isaa-page"><DST /></div>
+    <div className="pdf-page isaa-page"><Vanderbilt /></div>
 
     {secondPdfData.map((item, index) => (
       <Commnpdfpage key={`secondpdf-${index}`} src={item.url} alttext={item.alttext} />
@@ -80,7 +80,7 @@ const GeneratePDF = () => {
       }
     }
 
-    pdf.save(`${name}_report.pdf`);
+    pdf.save(`${patientData.name}_report.pdf`);
     setLoading(false);
   };
 
